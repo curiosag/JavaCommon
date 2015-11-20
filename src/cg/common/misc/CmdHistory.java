@@ -1,0 +1,87 @@
+package cg.common.misc;
+
+import cg.common.check.Check;
+import cg.common.io.StringStorage;
+
+public final class CmdHistory {
+
+	private final String headSentinel = "\u0001";
+	private final String tailSentinel = "\u0000";
+	private final int tailSentinelIdx = 0;
+
+	private final int next = 1;
+	private final int prev = -1;
+
+	private StringList cmdHistory;
+	private int currPos = 0;
+
+	private int headSentinelIdx() {
+		return cmdHistory.size() - 1;
+	}
+
+	public CmdHistory(StringStorage storage) {
+		cmdHistory = new StringList(storage);
+		if (cmdHistory.isEmpty()) {
+			cmdHistory.add(tailSentinel);
+			cmdHistory.add(headSentinel);
+		}
+		currPos = headSentinelIdx();
+	}
+
+	private String top() {
+		return cmdHistory.get(headSentinelIdx() - 1);
+	}
+
+	public void add(String cmd) {
+		if (!cmd.equals(top())) {
+			cmdHistory.set(headSentinelIdx(), cmd);
+			cmdHistory.add(headSentinel);
+			cmdHistory.writeToStorage();
+			currPos = headSentinelIdx();
+		}
+	}
+
+	private boolean hitBorder(int i, int navigation) {
+		return (navigation > 0 && i >= headSentinelIdx()) || (navigation < 0 && i <= tailSentinelIdx);
+	}
+
+	public String navigate(int i) {
+		Check.isTrue(Math.abs(i) == 1);
+
+		currPos = currPos + i;
+
+		String result = null;
+		if (!hitBorder(currPos, i))
+			result = cmdHistory.get(currPos);
+		else
+			currPos = currPos - i;
+
+		return result;
+	}
+
+	private boolean setAny(CmdDestination dest, String value) {
+
+		boolean result = value != null;
+		if (result)
+			dest.set(value);
+		return result;
+
+	}
+
+	public boolean prev(CmdDestination dest) {
+		return setAny(dest, navigate(prev));
+	}
+
+	public boolean next(CmdDestination dest) {
+		return setAny(dest, navigate(next));
+	}
+
+	public boolean isEmpty() {
+		return cmdHistory.size() <= 2;
+	}
+
+	public void rewind() {
+		currPos = headSentinelIdx();
+	}
+
+}
