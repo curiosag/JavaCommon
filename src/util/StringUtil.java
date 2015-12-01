@@ -11,8 +11,8 @@ import gc.common.structures.OrderedIntTuple;
 public class StringUtil {
 
 	/**
-	 * clips 1 character from beginning and end of a string. 
-	 * returns "" if length is < 3
+	 * clips 1 character from beginning and end of a string. returns "" if
+	 * length is < 3
 	 */
 	public static String peel(String s) {
 		String result = null;
@@ -28,10 +28,10 @@ public class StringUtil {
 
 		if (from == null || from.length() == 0)
 			return replacement;
-		
-		if (max(from)  < clipInterval.lo())
+
+		if (max(from) < clipInterval.lo())
 			return from + replacement;
-		
+
 		String front;
 		if (clipInterval.lo() == 0)
 			front = "";
@@ -43,7 +43,7 @@ public class StringUtil {
 			back = "";
 		else
 			back = from.substring(clipInterval.hi() + 1);
-		
+
 		return front + replacement + back;
 	}
 
@@ -63,6 +63,10 @@ public class StringUtil {
 			return "";
 		}
 		return s;
+	}
+
+	public static boolean nullableEqual(String s1, String s2) {
+		return (s1 == null && s2 == null) || (s1 != null && s2 != null && s1.length() == s2.length() && s1.equals(s2));
 	}
 
 	public static boolean emptyOrNull(String s) {
@@ -97,12 +101,12 @@ public class StringUtil {
 	}
 
 	public static String insert(String from, int pos, String val) {
-		
+
 		Check.isTrue(pos >= 0);
-		
+
 		if (from == null || from.length() == 0)
 			return val;
-		
+
 		return from.substring(0, pos) + val + from.substring(pos);
 	}
 
