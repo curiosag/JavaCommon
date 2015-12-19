@@ -10,6 +10,28 @@ import gc.common.structures.OrderedIntTuple;
 
 public class StringUtil {
 
+	public static int getIndexBeforeChar(String text, char c, int startIndex, int increment) {
+		if (StringUtil.emptyOrNull(text))
+			return -1;
+
+		int currIndex = startIndex;
+		int maxIndex = text.length() - 1;
+
+		Check.isTrue(currIndex >= 0 && currIndex <= maxIndex);
+
+		if (text.charAt(startIndex) == c)
+			return startIndex;
+
+		while (currIndex >= 0 || currIndex < maxIndex) {
+			int nextIndex = currIndex + increment;
+			if (nextIndex < 0 || nextIndex > maxIndex || text.charAt(nextIndex) == c)
+				return currIndex;
+			else
+				currIndex = currIndex + increment;
+		}
+		return startIndex;
+	}
+
 	/**
 	 * clips 1 character from beginning and end of a string. returns "" if
 	 * length is < 3
@@ -20,6 +42,23 @@ public class StringUtil {
 			result = "";
 		else if (s.length() >= 3)
 			result = s.substring(1, s.length() - 1);
+		return result;
+	}
+
+	/**
+	 * clips character c from beginning and end of s, if any of them is there
+	 * 
+	 * @param s
+	 * @param c
+	 * @return clipped string
+	 */
+	public static String peel(String s, char c) {
+		String result = s;
+		if (s != null && s.length() > 1) 
+			result = result.charAt(0) == '\'' ? result.substring(1) : result;
+		if (s != null && s.length() > 0) 	
+			result = result.charAt(result.length() - 1) == '\'' ? result.substring(0, result.length() - 1) : result;
+		
 		return result;
 	}
 

@@ -1,15 +1,19 @@
 package cg.common.core;
 
-public class SystemLogger implements Logging {
+import java.util.Observable;
 
+import com.google.common.base.Optional;
+
+public class SystemLogger extends AbstractLogger {
+	
 	@Override
-	public void Info(String info) {
+	protected void hdlInfo(String info) {
 		System.out.println("INFO: " + info);
-	}
+	};
 
 	@Override
-	public void Error(String error) {
+	protected void hdlError(String error) {
 		System.out.println("ERROR: " + error);
-	}
+	};
 
 }
