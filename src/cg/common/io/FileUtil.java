@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 
 public class FileUtil {
@@ -38,7 +39,6 @@ public class FileUtil {
 	 * 
 	 */
 	public static String readFromFile(String path) {
-		StringBuilder sb = new StringBuilder();
 		File file = new File(path);
 		
 		if(! file.exists())
@@ -47,10 +47,22 @@ public class FileUtil {
 		if (file.isDirectory())
 			throwRuntimeException("file expected, this is a directory: " + path);
 				
-		BufferedInputStream bin = null;
 		try {
 			FileInputStream fin = new FileInputStream(file);
-			bin = new BufferedInputStream(fin);
+			return readFromStream(fin);
+		} catch (IOException e) {
+			throwRuntimeException(e.getMessage());
+		}
+		
+		return "";
+	}
+
+	public static String readFromStream(InputStream input){
+		StringBuilder sb = new StringBuilder();
+		
+		BufferedInputStream bin = null;
+		try {
+			bin = new BufferedInputStream(input);
 			byte[] contents = new byte[1024];
 
 			int bytesRead = 0;
@@ -72,6 +84,7 @@ public class FileUtil {
 			}
 		}
 		return sb.toString();
+		
 	}
-
+	
 }
