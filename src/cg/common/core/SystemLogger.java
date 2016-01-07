@@ -1,9 +1,5 @@
 package cg.common.core;
 
-import java.util.Observable;
-
-import com.google.common.base.Optional;
-
 public class SystemLogger extends AbstractLogger {
 	
 	@Override
