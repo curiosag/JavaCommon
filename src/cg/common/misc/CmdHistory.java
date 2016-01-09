@@ -5,6 +5,7 @@ import cg.common.io.StringStorage;
 
 public final class CmdHistory {
 
+	private static final int MAX_CMDHISTORY = 50 + 2;
 	private final String headSentinel = "\u0001";
 	private final String tailSentinel = "\u0000";
 	private final int tailSentinelIdx = 0;
@@ -34,6 +35,9 @@ public final class CmdHistory {
 
 	public void add(String cmd) {
 		if (!cmd.equals(top())) {
+			if (cmdHistory.size() > MAX_CMDHISTORY)
+				cmdHistory.remove(tailSentinelIdx + 1);
+			
 			cmdHistory.set(headSentinelIdx(), cmd);
 			cmdHistory.add(headSentinel);
 			cmdHistory.writeToStorage();

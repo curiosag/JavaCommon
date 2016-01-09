@@ -46,6 +46,16 @@ public class StringUtil {
 	}
 
 	/**
+	 * 
+	 * @param value
+	 * @return	value without single quotes
+	 */
+	public static String stripQuotes(String value)
+	{
+		return StringUtil.peel(value, '\'');
+	}
+	
+	/**
 	 * clips character c from beginning and end of s, if any of them is there
 	 * 
 	 * @param s
@@ -54,11 +64,11 @@ public class StringUtil {
 	 */
 	public static String peel(String s, char c) {
 		String result = s;
-		if (s != null && s.length() > 1) 
+		if (s != null && s.length() > 1)
 			result = result.charAt(0) == '\'' ? result.substring(1) : result;
-		if (s != null && s.length() > 0) 	
+		if (s != null && s.length() > 0)
 			result = result.charAt(result.length() - 1) == '\'' ? result.substring(0, result.length() - 1) : result;
-		
+
 		return result;
 	}
 
@@ -147,6 +157,30 @@ public class StringUtil {
 			return val;
 
 		return from.substring(0, pos) + val + from.substring(pos);
+	}
+
+	public static String timesN(String value, int n) {
+		Check.notNull(value);
+		Check.isTrue(n >= 0);
+		
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < n; i++)
+			sb.append(value);
+		return sb.toString();
+	}
+
+	public static String coalesce(String value, String c) {
+		Check.notNull(value);
+		Check.notNull(c);
+		
+		if (c.length() == 0 || value.length() == 0)
+			return value;
+		
+		String cc = timesN(c, 2);
+		while (value.indexOf(cc) >= 0)
+			value = value.replaceAll(cc, c);
+		
+		return value;
 	}
 
 }

@@ -9,6 +9,26 @@ import gc.common.structures.OrderedIntTuple;
 public class StringUtilTest {
 
 	@Test
+	public void testCoalesce()
+	{
+		assertEquals("", StringUtil.coalesce("", ""));
+		assertEquals("", StringUtil.coalesce("", " "));
+		assertEquals("a", StringUtil.coalesce("a", ""));
+		assertEquals("a", StringUtil.coalesce("a", "a"));
+		assertEquals("a", StringUtil.coalesce("aa", "a"));
+		assertEquals("abbbabbba", StringUtil.coalesce("aaabbbabbbaaaaaaaa", "a"));
+	}
+	
+	@Test 
+	public void testTimesN()
+	{
+		assertEquals("", StringUtil.timesN("aa", 0));
+		assertEquals("a", StringUtil.timesN("a", 1));
+		assertEquals("aa", StringUtil.timesN("a", 2));
+		assertEquals("", StringUtil.timesN("", 2));
+	}
+	
+	@Test
 	public void testindexBeforeChar() {
 		String val = "0 234 6";
 		// "normal" case

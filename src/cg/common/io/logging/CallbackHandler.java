@@ -7,9 +7,11 @@ import cg.common.check.Check;
 
 public class CallbackHandler extends Handler {
 
-	private OnLogLineWritten callback;
+	private OnLineWritten callback;
+
+	int count = 0;
 	
-	public CallbackHandler(OnLogLineWritten callback){
+	public CallbackHandler(OnLineWritten callback){
 		Check.notNull(callback);
 		this.callback = callback;
 	}
@@ -21,7 +23,7 @@ public class CallbackHandler extends Handler {
 
 	@Override
 	public void flush() {
-
+		count++;
 	}
 
 	@Override

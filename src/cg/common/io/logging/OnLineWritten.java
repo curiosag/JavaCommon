@@ -1,5 +1,5 @@
 package cg.common.io.logging;
 
-public interface OnLogLineWritten {
+public interface OnLineWritten {
 	void notify(String value);
 }
